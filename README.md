@@ -1,2 +1,2 @@
 # QuantMasterFund
- My strategy library for live
+ My strategy library for live quantitative trading algorithms
