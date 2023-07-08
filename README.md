@@ -21,4 +21,7 @@
 
     Link to Contabo: https://contabo.com/en/locations/asia-singapore/?utm_source=google&utm_medium=cpc&utm_campaign=brand&gclid=Cj0KCQjwkqSlBhDaARIsAFJANkj_50whlQdGlNfK6oyPDBVgsO63xZQ_FqZNjesxAx54iQ4bnsWPQEIaApe9EALw_wcB
     
- 7. Drag algo onto a chart e.g USDJPY and select the desired timeframe. Plenty of resources on youtube to run algos on mql5 
+ 7. Drag algo onto a chart e.g USDJPY and select the desired timeframe. Plenty of resources on youtube to run algos on mql5
+
+
+ **01/07/23: Just a pet project for fun. Either this blows up my $2k or it could turn into something long-term. 
