@@ -15,8 +15,6 @@ input double ATRZScoreThreshold = 1.2;
 input int defensiveTP = 4;
 double bid,ask;
 int barsTotal;
-
-// Set period to hourly
 ENUM_TIMEFRAMES timeframe = PERIOD_CURRENT;
 
 // SET GLOBAL VARIABLES
@@ -105,7 +103,7 @@ void OnTick()
          double sl = stopLoss==0 ? 0: ask + stopLoss* _Point;
          double tp = takeProfit==0 ? 0: ask - takeProfit* _Point;
          ask = NormalizeDouble(ask,_Digits);
-         trade.Buy(0.08,_Symbol,ask,sl,0);
+         trade.Buy(0.1,_Symbol,ask,sl,0);
          
       }
       if(fastMA[1]<slowMA[1] && cntSell==0){
@@ -114,7 +112,7 @@ void OnTick()
          double sl = stopLoss==0 ? 0: bid - stopLoss* _Point;
          double tp = takeProfit==0 ? 0: bid + takeProfit* _Point;
          bid = NormalizeDouble(bid,_Digits);
-         trade.Sell(0.08,_Symbol,bid,sl,0);
+         trade.Sell(0.1,_Symbol,bid,sl,0);
       }
       Print("Order ticket: ",get_order_ticket());
       Print("Close :", close," Bid: ", bid," Ask: ",ask," Floating Pips: ",getpnl_inpips(cntBuy,cntSell,bid,ask,close));
@@ -122,20 +120,12 @@ void OnTick()
       
       if (Defensive == true){
          double floating_pips = getpnl_inpips(cntBuy,cntSell, bid,ask,close);
-         Print(floating_pips);
          ulong ordertix = get_order_ticket();
          Print(floating_pips);
          if (floating_pips>defensiveTP || semiDev){
-            if (cntBuy>0){
-               double sl = close-500*_Point;
-               Print("BUY",close,sl);
-               trade.PositionModify(ordertix,sl,0);
-            }else if(cntSell > 0){
-               double sl = close + 500*_Point;
-               Print("SSELL",close,sl);
-               trade.PositionModify(ordertix,sl,0);
-            }
+            AdjustTrailingSL(close,ordertix);
          }else{
+            Print("No Change");
             if(cntBuy >0){
                double sl = close-stopLoss*_Point;
                trade.PositionModify(ordertix,0,0);
@@ -222,5 +212,29 @@ ulong get_order_ticket(){
          return ticket;
       }
    }return (0);
+ }
+ 
+ void AdjustTrailingSL(double & close, ulong & ordertix){
+   double buysl = NormalizeDouble(close - 500 * _Point,_Digits);
+   double sellsl = NormalizeDouble(close + 500*_Point,_Digits);
+   for (int cnt = PositionsTotal()-1;cnt>=0;cnt--){
+      ulong magic = PositionGetInteger(POSITION_MAGIC);
+      ulong ticket = PositionGetTicket(cnt);
+      ulong postype = PositionGetInteger(POSITION_TYPE);
+      Print("TrailingSL"," MagicNumber ",magic, " ticket ",ticket," Position Type ",postype);
+      if(magic ==magicNumber && postype ==0){
+         double current_sl = PositionGetDouble(POSITION_SL);
+         if (buysl > current_sl){
+            Print("Adjusted Trailing SL");
+            trade.PositionModify(ordertix,buysl,0);
+         } 
+      }else if(magic == magicNumber && postype ==0){
+         double current_sl = PositionGetDouble(POSITION_SL);
+         if(sellsl<current_sl){
+            Print("Adjusted Trailing SL");
+            trade.PositionModify(ordertix,sellsl,0);
+         }
+      }
+   }
  }
 
