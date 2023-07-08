@@ -9,7 +9,7 @@
  3. EURGBP Regime Constrained Fader
  
  Recommended Set-Up:
- 1. Broker: ICMarkets (due to low spreads and wide range of tradeable products
+ 1. Broker: ICMarkets (low spreads and wide range of tradeable products)
     
     Link to ICMarkets: https://www.icmarkets.com/global/en
     
@@ -21,4 +21,4 @@
 
     Link to Contabo: https://contabo.com/en/locations/asia-singapore/?utm_source=google&utm_medium=cpc&utm_campaign=brand&gclid=Cj0KCQjwkqSlBhDaARIsAFJANkj_50whlQdGlNfK6oyPDBVgsO63xZQ_FqZNjesxAx54iQ4bnsWPQEIaApe9EALw_wcB
     
- 7. Drag algo onto a chart e.g USDJPY and select the desired timeframe. Plenty of resources in youtube to run algos on mql5 
+ 7. Drag algo onto a chart e.g USDJPY and select the desired timeframe. Plenty of resources on youtube to run algos on mql5 
