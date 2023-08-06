@@ -1,5 +1,5 @@
 # QuantMasterFund
- My strategy library for quantitative trading algorithms in production.
+ My strategy library for quantitative trading algorithms.
  
  Recommended Set-Up:
  1. Broker: OANDA
