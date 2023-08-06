@@ -2,9 +2,7 @@
  My strategy library for quantitative trading algorithms in production.
  
  Recommended Set-Up:
- 1. Broker: ICMarkets (low spreads and wide range of tradeable products)
-    
-    Link to ICMarkets: https://www.icmarkets.com/global/en
+ 1. Broker: OANDA
     
  3. Metatrader5 (code is implemented in mql5 not mql4)
     
