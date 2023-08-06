@@ -2,7 +2,7 @@
  My strategy library for quantitative trading algorithms.
  
  Recommended Set-Up:
- 1. Broker: OANDA
+ 1. You will need an FX brokerage, any will do
     
  3. Metatrader5 (code is implemented in mql5 not mql4)
     
