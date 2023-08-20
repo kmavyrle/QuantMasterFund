@@ -1,17 +1,8 @@
 # QuantMasterFund
- My strategy library for quantitative trading algorithms in production.
- 
- View the live portfolio here: https://www.myfxbook.com/members/kmavyrle/kmavyrle-quant-master-fund/10238340
-
- Current Strategies Deployed:
- 1. FX Carry-to-Vol
- 2. USDJPY Defensive Trend Following
- 3. EURGBP Regime Constrained Fader
+ My strategy library for quantitative trading algorithms.
  
  Recommended Set-Up:
- 1. Broker: ICMarkets (low spreads and wide range of tradeable products)
-    
-    Link to ICMarkets: https://www.icmarkets.com/global/en
+ 1. You will need an FX brokerage, any will do
     
  3. Metatrader5 (code is implemented in mql5 not mql4)
     
