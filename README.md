@@ -15,4 +15,3 @@
  7. Drag algo onto a chart e.g USDJPY and select the desired timeframe. Plenty of resources on youtube to run algos on mql5
 
 
- **01/07/23: Just a pet project for fun. Either this blows up my $2k or it could turn into something long-term. 
