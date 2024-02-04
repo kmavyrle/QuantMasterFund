@@ -184,8 +184,10 @@ class Options():
         option_chain = pd.DataFrame()
         for data in pool.map(self.get_tick_data,desired_options.index):
             option_chain= pd.concat([option_chain,data])
-        option_chain['strike'] = [strike.split('-')[2] for strike in option_chain['instrument_name']]
+        option_chain['strike'] = [float(strike.split('-')[2]) for strike in option_chain['instrument_name']]
         option_chain['expiration_date'] = len(option_chain)*[datetime.datetime.fromtimestamp(target_expiry/1000)]
+        option_chain['dte']= [(dt - pd.datetime.today()).days for dt in option_chain['expiration_date']]
+
         return option_chain
 
 
