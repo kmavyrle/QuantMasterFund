@@ -50,7 +50,7 @@ class HistData():
         return asyncio.get_event_loop().run_until_complete(api(message))
 
 
-    def retrieve_hist_data(self,start, end, instrument, timeframe):
+    def get_hist_data(self,start, end, instrument, timeframe):
         '''
         Function generates historical price data for the instrument
         Params:
@@ -79,7 +79,7 @@ class HistData():
         df.set_index('timestamp',inplace = True)
         return df
 
-    def retrieve_hist_vol_idx(self,start,end,timeframe):
+    def get_hist_vol_idx(self,start,end,timeframe):
         msg = \
         {
         "jsonrpc" : "2.0",
