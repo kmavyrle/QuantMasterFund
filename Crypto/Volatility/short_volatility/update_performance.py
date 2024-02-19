@@ -23,8 +23,8 @@ for dets in positions:
     gamma+=dets['gamma']
 
 
-shortvolpnl = pd.DataFrame([pnl],index = [pd.datetime.today().strftime('%Y-%m-%d')],columns = ['daily_pnl'])
-portfolio_greeks = pd.DataFrame(np.array([delta,vega,theta,gamma]).reshape(-1,4),index = [pd.datetime.today().strftime('%Y-%m-%d')],columns = ['delta','vega','theta','gamma'])
+shortvolpnl = pd.DataFrame([pnl],index = [pd.datetime.today()],columns = ['daily_pnl'])
+portfolio_greeks = pd.DataFrame(np.array([delta,vega,theta,gamma]).reshape(-1,4),index = [pd.datetime.today()],columns = ['delta','vega','theta','gamma'])
 
 perf_path =os.path.join(os.getcwd(),'performance_analytics\\perf_analytics.csv') 
 greeks_path = os.path.join(os.getcwd(),'performance_analytics\\portfolio_greeks.csv') 
