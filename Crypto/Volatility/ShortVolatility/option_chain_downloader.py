@@ -12,18 +12,22 @@ warnings.filterwarnings("ignore")
 
 import os
 
-eth_hdata = Options('ETH')
-btc_hdata = Options('BTC')
+eth_opt = Options('ETH')
+btc_opt = Options('BTC')
+eth_hdata = HistData('ETH')
+btc_hdata = HistData('BTC')
+
+btc_spot = btc_hdata.get_idx_price()
+eth_spot = eth_hdata.get_idx_price()
 
 ethpath =os.path.join(os.getcwd(),'data/eth_hist_option_chain.csv') 
 btcpath =os.path.join(os.getcwd(),'data/btc_hist_option_chain.csv')
 
-eth_options = eth_hdata.get_all_active_options()
-btc_options = btc_hdata.get_all_active_options()
-eth_options['Date']=[pd.datetime.today().strftime('%Y-%m-%d')]*len(eth_options)
-btc_options['Date']=[pd.datetime.today().strftime('%Y-%m-%d')]*len(btc_options)
-eth_options['Time']=[pd.datetime.today().time()]*len(eth_options)
-btc_options['Time']=[pd.datetime.today().time()]*len(btc_options)
+
+
+eth_options = eth_opt.get_full_option_chain(eth_spot)
+btc_options = btc_opt.get_full_option_chain(btc_spot)
+
 
 #eth_options.to_csv(ethpath)
 #btc_options.to_csv(btcpath)
@@ -43,3 +47,5 @@ with open(btcpath,'a',newline = '') as csvfile:
         row = temp.iloc[i].values
         writer.writerow(row)
 csvfile.close()
+
+

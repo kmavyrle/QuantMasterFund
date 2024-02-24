@@ -41,7 +41,7 @@ print('''
 ''')
 
 shortvolpnl = pd.DataFrame([ret[0]],index = [pd.datetime.today().strftime("%Y-%m-%d")],columns = ['daily_pnl'])
-portfolio_greeks = pd.DataFrame(np.array([delta,vega,theta,gamma]).reshape(-1,4),index = [pd.datetime.today().strftime("%Y-%m-%d")],columns = ['delta','vega','theta','gamma'])
+portfolio_greeks = pd.DataFrame(np.array([delta*10,vega,theta,gamma]).reshape(-1,4),index = [pd.datetime.today().strftime("%Y-%m-%d")],columns = ['delta10','vega','theta','gamma1000'])
 
 
 

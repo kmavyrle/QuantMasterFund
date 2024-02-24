@@ -171,11 +171,12 @@ class Options():
         atm_cont = active_options.loc[(active_options['strike']-curr_price).abs().idxmin()].name
         return atm_cont
     
-    def get_option_chain(self,target_expiry,option_type):
+    def get_option_chain(self,target_expiry,option_type,date_adjustment=20):
         eth_active_options = self.get_all_active_options()
-        target_expiry = int((pd.to_datetime(target_expiry)+datetime.timedelta(20)).timestamp()*1000)
+        target_expiry = int((pd.to_datetime(target_expiry)+datetime.timedelta(date_adjustment)).timestamp()*1000)
         print(target_expiry)
         eth_options = eth_active_options[(eth_active_options['expiration_timestamp']-target_expiry>0)]
+        
         target_expiry = eth_options['expiration_timestamp'].iloc[0]
         print('Expiration Date: ',datetime.datetime.fromtimestamp(target_expiry/1000))
 
@@ -189,6 +190,30 @@ class Options():
         option_chain['dte']= [(dt - pd.datetime.today()).days for dt in option_chain['expiration_date']]
 
         return option_chain
+    
+    def get_full_option_chain(self,curr_price):
+        full_opt_chain = pd.DataFrame()
+        for type in ['call','put']:
+            for exp in list(set(self.get_all_active_options()['expiration_date']))[:-1]:
+                try:
+                    temp = self.get_option_chain(exp,'call',date_adjustment=0)
+                    temp['spot'] = [curr_price]*len(temp)
+                    temp['option_type']=[type]*len(temp)
+                    temp['mid_price'] = (temp['best_ask_price']+temp['best_bid_price'])/2
+                    
+                    temp['mark_price_usd'] = temp['mark_price']*curr_price
+                    temp['mid_price_usd'] = temp['mid_price']*curr_price
+
+                    temp['Date'] = [pd.datetime.today().date()]*len(temp)
+                    temp['time'] = [pd.datetime.today().time()]*len(temp)
+                    
+                    full_opt_chain = pd.concat([full_opt_chain,temp])
+                except:
+                    print(f"{exp} date options failed")
+                    continue
+        full_opt_chain=full_opt_chain.sort_values(['expiration_date','option_type','strike'])
+        full_opt_chain.set_index('Date',inplace = True)
+        return full_opt_chain
 
 
     
