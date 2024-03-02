@@ -184,14 +184,24 @@ class DeribitWS:
     
 
 
-    def get_trade_hist(self,currency,count = 10):
+#    def get_trade_hist(self,currency,count = 10):
+#        params={
+#            'currency':currency,
+#            'count':count
+#        }
+#        self.msg['method'] = "private/get_trigger_order_history"
+#        self.msg['params']=params
+#        resp = self.async_loop(self.priv_api, json.dumps(self.msg))
+#        return resp
+
+    def get_trade_hist(self,currency,start,end):
         params={
             'currency':currency,
-            'count':count
+            'start_timestamp':start,
+            'end_timestamp':end
         }
-        self.msg['method'] = "private/get_trigger_order_history"
+        self.msg['method'] = "private/get_transaction_log"
         self.msg['params']=params
         resp = self.async_loop(self.priv_api, json.dumps(self.msg))
 
         return resp
-

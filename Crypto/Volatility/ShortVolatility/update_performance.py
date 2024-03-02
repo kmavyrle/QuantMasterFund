@@ -21,20 +21,21 @@ greeks_path = os.path.join(os.getcwd(),'performance_analytics\\portfolio_greeks.
 
 rets = pd.read_csv(r'performance_analytics\\perf_analytics.csv',index_col = 0)
 prev_rets = (1+rets).prod()-1
+print(prev_rets)
 dep = float(input('Enter Deposit Amount:'))
 c=1
 ret=0
 for dets in positions:
-    print(f"Position {dets['direction']} {dets['instrument_name']} PnL:",dets['floating_profit_loss_usd'])
+    print(f"Position {dets['direction']} {dets['instrument_name']} PnL:{dets['floating_profit_loss_usd']} Posn: {dets['direction']} {dets['size']}")
     ret+=(dets['floating_profit_loss_usd']+dets['realized_profit_loss'])
-    ret = ret/dep
-    ret = ((1+ret)/(1+prev_rets))-1
     delta +=dets['delta']
     theta +=dets['theta']
     vega +=dets['vega']
     gamma+=dets['gamma']
     c+=1
-
+print('Total Profit: ',ret)
+ret = ret/dep
+ret = ((1+ret)/(1+prev_rets))-1
 print('''
 
 
