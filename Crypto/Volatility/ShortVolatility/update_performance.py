@@ -84,6 +84,7 @@ rel_pnl_path = os.path.join(os.getcwd(),'performance_analytics\\realized_rets.cs
 realized_pnl.to_csv(rel_pnl_path)
 
 #Combine Realized and Floating PnL
+print(rets,realized_pnl)
 
 rets = pd.concat([rets,realized_pnl[['PnL']].groupby(realized_pnl.index).sum()],axis=1).fillna(0).sum(axis=1)
 rets = pd.DataFrame(rets.cumsum(),columns = ['Cumulative Returns (ETH)'])
