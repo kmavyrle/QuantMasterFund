@@ -227,31 +227,43 @@ class DeribitWS:
         trade_log['datetime'] = [datetime.datetime.fromtimestamp(int(str(dt)[:-3])) for dt in trade_log.timestamp]
         trade_log['Date'] = [dt.strftime("%Y-%m-%d") for dt in trade_log.datetime]
         trade_log['side']=trade_log['side'].replace('-',"N.A. N.A.")
-        trade_log['direction'] = [side.split(" ")[1] for side in trade_log.side]
+        dirlist = []
+        for side in trade_log['side']:
+            try:
+                dirlist.append(side.split(" ")[1])
+            except:
+                dirlist.append('None')
+        trade_log['direction'] = dirlist
         trade_log['direction'] = [1 if direction =='buy' else -1 if direction =='sell' else 0 for direction in trade_log.direction]
         trade_log['trade_type'] = [side.split(" ")[0] for side in trade_log.side]
         return trade_log
     
     def get_realized_pnl(self,trade_log,instrument):
         def net_closing_px(exits):
-            weighted_exit = sum(exits['direction']*exits['amount']*exits['price'])/sum(exits['amount'])
+            weighted_exit = sum(exits['amount']*exits['price'])/sum(exits['amount'])
             return weighted_exit
         
         trade_log = trade_log[trade_log['instrument_name']==instrument]
         realized_position = sum((trade_log['direction']*trade_log['amount']).dropna())
         entries = trade_log[trade_log['trade_type']=='open']
-        exits = trade_log[trade_log['trade_type']=='close']
+        exits = trade_log[(trade_log['trade_type']=='close')|(trade_log['trade_type']=='liquidation')]
         #return exits
         if exits.empty or entries.empty:
             return pd.DataFrame()
-        weighted_entry = sum(entries['direction']*entries['amount']*entries['price'])/sum(entries['amount'])
+        weighted_entry = (sum(entries['amount']*entries['price']))/abs(sum(entries['amount']))
         weighted_exits = exits.groupby('Date').apply(net_closing_px)
         weighted_exits = pd.DataFrame(weighted_exits,columns = ['PnL'])
-        realized_pnl = -(weighted_exits - weighted_entry)
+
+        #entry_volume = abs(sum(entries['amount']))
+        exit_volume = -sum(exits['amount']*exits['direction'])
+
+        realized_volume = exit_volume
+        realized_pnl = (weighted_exits - weighted_entry)*realized_volume
         realized_pnl['instrument']=[instrument]*len(realized_pnl)
         #realized_pnl = (weighted_exit - weighted_entry)/abs(realized_position)
         #print(weighted_entry,weighted_exit,realized_position)
         return realized_pnl
+
     
     def get_agg_rel_pnl(self,trade_log):
         pool = ThreadPoolExecutor(max_workers = 20)
